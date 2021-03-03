@@ -5,7 +5,7 @@ require("@nomiclabs/hardhat-etherscan");
 
 const { mnemonic, infuraId, etherscanKey } = require('./.secrets.json');
 const CONTRACTS = {
-  'ropsten': '0xCfc4DEA077C09aF8A41389466c63A382F7D335F6'
+  'ropsten': '0x72c33B247e62d0f1927E8d325d0358b8f9971C68'
 }
 
 task("names", "query reverse records")
