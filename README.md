@@ -20,7 +20,7 @@ yarn query:ropsten 0x123...,0x234...
 
 ### getNames([address])
 
-Returns an array of string. If the given address does not have reverse record or forward record setup, it returns empty string
+Returns an array of string. If the given address does not have a reverse record or forward record setup, it returns an empty string.
 
 
 ## Deployed contract address
