@@ -16,7 +16,7 @@ async function assertReverseRecord(ens, address){
     forwardResolver = await ethers.getContractAt('PublicResolver', forwardResolverAddress)
     forwardAddress = await forwardResolver['addr(bytes32)'](namehash.hash(reverseRecord))  
   }catch(e){
-    console.log(e)
+    // console.log(e)
   }
   return address === forwardAddress
 }
@@ -33,11 +33,9 @@ describe("ReverseRecords contract", function() {
       ens = await ENSRegistry.deploy();
       resolver = await PublicResolver.deploy(ens.address);
       registrar = await ReverseRegistrar.deploy(ens.address, resolver.address);
-      console.log(1, fooAddr.address, barAddr.address, bazAddr.address)
       await ens.setSubnodeOwner(namehash.hash(''), sha3('eth'), owner.address);
       await ens.setSubnodeOwner(namehash.hash(''), sha3('reverse'), owner.address);
     　await ens.setSubnodeOwner(namehash.hash('reverse'), sha3('addr'), registrar.address);
-      console.log(1.2)
     })
         
     it("Reverse record", async function() {

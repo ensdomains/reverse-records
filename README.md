@@ -6,6 +6,7 @@
 ```
 git clone https://github.com/ensdomains/reverse-records
 cd reverse-records
+cp secrets.json.example .secrets.json // Add your mnemonic, infura project id, and etherscan key
 yarn
 ```
 
