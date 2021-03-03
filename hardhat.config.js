@@ -1,6 +1,7 @@
 require("@nomiclabs/hardhat-waffle");
 require('@ensdomains/ens');
 require('@ensdomains/resolver');
+const { mnemonic, infuraId } = require('./.secrets.json');
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -20,6 +21,26 @@ task("accounts", "Prints the list of accounts", async () => {
  */
 
 module.exports = {
+  networks: {
+    localhost: {
+      url: "http://127.0.0.1:8545"
+    },
+    hardhat: {
+    },
+    ropsten: {
+      url: `https://ropsten.infura.io/v3/${infuraId}`,
+      chainId: 3,
+      gasPrice: 20000000000,
+      accounts: {mnemonic: mnemonic}
+    }
+    // ,
+    // mainnet: {
+    //   url: "https://bsc-dataseed.binance.org/",
+    //   chainId: 56,
+    //   gasPrice: 20000000000,
+    //   accounts: {mnemonic: mnemonic}
+    // }
+  },
   solidity: {
     compilers: [
       {

@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "hardhat test"
+    "test": "hardhat test",
+    "deploy:ropsten": "npx hardhat run --network ropsten scripts/deploy.js"
   },
   "keywords": [],
   "author": "",
