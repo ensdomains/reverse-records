@@ -5,13 +5,16 @@
   "main": "index.js",
   "scripts": {
     "test": "hardhat test",
-    "deploy:ropsten": "npx hardhat run --network ropsten scripts/deploy.js"
+    "deploy:ropsten": "npx hardhat run --network ropsten scripts/deploy.js",
+    "verify:ropsten": "npx hardhat verify --network ropsten 0xCfc4DEA077C09aF8A41389466c63A382F7D335F6 '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e'",
+    "query:ropsten": "npx hardhat names --network ropsten --addresses"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.1",
+    "@nomiclabs/hardhat-etherscan": "^2.1.1",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
     "chai": "^4.3.0",
     "ethereum-waffle": "^3.3.0",

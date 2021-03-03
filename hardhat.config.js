@@ -1,24 +1,20 @@
 require("@nomiclabs/hardhat-waffle");
 require('@ensdomains/ens');
 require('@ensdomains/resolver');
-const { mnemonic, infuraId } = require('./.secrets.json');
+require("@nomiclabs/hardhat-etherscan");
 
-// This is a sample Hardhat task. To learn how to create your own go to
-// https://hardhat.org/guides/create-task.html
-task("accounts", "Prints the list of accounts", async () => {
-  const accounts = await ethers.getSigners();
+const { mnemonic, infuraId, etherscanKey } = require('./.secrets.json');
+const CONTRACTS = {
+  'ropsten': '0xCfc4DEA077C09aF8A41389466c63A382F7D335F6'
+}
 
-  for (const account of accounts) {
-    console.log(account.address);
-  }
-});
-
-// You need to export an object to set up your config
-// Go to https://hardhat.org/config/ to learn more
-
-/**
- * @type import('hardhat/config').HardhatUserConfig
- */
+task("names", "query reverse records")
+  .addParam("addresses", "List of accounts, comma delimited")
+  .setAction(async (taskArgs, hre) => {
+    const addresses = taskArgs.addresses.split(',')
+    const reverseRecords = await hre.ethers.getContractAt('ReverseRecords', CONTRACTS[hre.network.name])
+    console.log(await reverseRecords.getNames(addresses))
+  });
 
 module.exports = {
   networks: {
@@ -32,31 +28,22 @@ module.exports = {
       chainId: 3,
       gasPrice: 20000000000,
       accounts: {mnemonic: mnemonic}
-    }
-    // ,
+    },
+    // rinkeby: {
+    // },
+    // goerli: {
+    // },
     // mainnet: {
-    //   url: "https://bsc-dataseed.binance.org/",
-    //   chainId: 56,
-    //   gasPrice: 20000000000,
-    //   accounts: {mnemonic: mnemonic}
     // }
+  },
+  etherscan: {
+    apiKey: etherscanKey
   },
   solidity: {
     compilers: [
       {
         version: "0.7.4"
       }
-      // ,
-      // {
-      //   version: "0.5.0",
-      //   settings: { } 
-      // }
     ]
-  },
-  // overrides: {
-  //   "contracts/ENS.sol": {
-  //     version: "0.7.4",
-  //     settings: { }
-  //   }
-  // }
+  }
 }
