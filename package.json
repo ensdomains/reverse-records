@@ -1,7 +1,7 @@
 {
   "name": "@ensdomains/reverse-records",
   "version": "1.0.0",
-  "description": "",
+  "description": "Returns multiple ENS reverse records with forward lookup check",
   "main": "index.js",
   "scripts": {
     "test": "hardhat test",
@@ -10,7 +10,7 @@
     "query:ropsten": "npx hardhat names --network ropsten --addresses"
   },
   "keywords": [],
-  "author": "",
+  "author": "Makoto Inoue",
   "license": "ISC",
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.1",
