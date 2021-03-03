@@ -25,4 +25,4 @@ Returns an array of string. If the given address does not have reverse record or
 
 ## Deployed contract address
 
-- Ropsten: [0xCfc4DEA077C09aF8A41389466c63A382F7D335F6](https://ropsten.etherscan.io/address/0xCfc4DEA077C09aF8A41389466c63A382F7D335F6)
+- Ropsten: [0x72c33B247e62d0f1927E8d325d0358b8f9971C68](https://ropsten.etherscan.io/address/0x72c33B247e62d0f1927E8d325d0358b8f9971C68)
