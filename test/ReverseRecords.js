@@ -24,7 +24,7 @@ async function assertReverseRecord(ens, address){
 describe("ReverseRecords contract", function() {
     let node, ens, resolver, registrar, ethNode
     before(async () => {
-      const [owner, fooAddr, barAddr, bazAddr] = await ethers.getSigners();
+      const [owner, aAddr, bAddr, cAddr, dAddr, eAddr, fAddr, gAddr] = await ethers.getSigners();
       ethNode = namehash.hash('eth')
       node = namehash.hash(owner.address.slice(2).toLowerCase() + ".addr.reverse");
       const ENSRegistry = await ethers.getContractFactory("ENSRegistry");
@@ -39,32 +39,66 @@ describe("ReverseRecords contract", function() {
     })
         
     it("Reverse record", async function() {
-      const [owner, fooAddr, barAddr, bazAddr] = await ethers.getSigners();
+      // aAddr: correct
+      // bAddr: no reverse record set
+      // cAddr: not the owner of c.eth
+      // dAddr: ower of d.eth but no resolver set
+      // eAddr: ower of e.eth and resolver set but no forward address set
+      // fAddr: set empty string to reverse record
+      // gAddr: correct
+      const [owner, aAddr, bAddr, cAddr, dAddr, eAddr, fAddr, gAddr] = await ethers.getSigners();
       const PublicResolver = await ethers.getContractFactory("PublicResolver");
       const resolverArtifact = await hre.artifacts.readArtifact("PublicResolver")
-      await ens.setSubnodeOwner(namehash.hash('eth'), sha3('foo'), fooAddr.address);
-      await ens.setSubnodeOwner(namehash.hash('eth'), sha3('bar'), barAddr.address);
-      await ens.setSubnodeOwner(namehash.hash('eth'), sha3('baz'), bazAddr.address);
-      await ens.connect(fooAddr).setResolver(namehash.hash('foo.eth'), resolver.address)
-      await ens.connect(barAddr).setResolver(namehash.hash('bar.eth'), resolver.address)
-      await ens.connect(bazAddr).setResolver(namehash.hash('baz.eth'), resolver.address)
-      await await resolver.connect(fooAddr)['setAddr(bytes32,address)'](namehash.hash('foo.eth'), fooAddr.address);
-      await await resolver.connect(barAddr)['setAddr(bytes32,address)'](namehash.hash('bar.eth'), barAddr.address);
-      await registrar.connect(fooAddr).setName('foo.eth')
-      await registrar.connect(bazAddr).setName('baz.eth')
+      await ens.setSubnodeOwner(namehash.hash('eth'), sha3('a'), aAddr.address);
+      await ens.setSubnodeOwner(namehash.hash('eth'), sha3('b'), bAddr.address);
+      // No c
+      await ens.setSubnodeOwner(namehash.hash('eth'), sha3('d'), dAddr.address);
+      await ens.setSubnodeOwner(namehash.hash('eth'), sha3('e'), eAddr.address);
+      await ens.setSubnodeOwner(namehash.hash('eth'), sha3('f'), fAddr.address);
+      await ens.setSubnodeOwner(namehash.hash('eth'), sha3('g'), gAddr.address);
 
-      expect(await assertReverseRecord(ens, fooAddr.address)).to.be.true
-      // no reverse record set
-      expect(await assertReverseRecord(ens, barAddr.address)).to.be.false
-      // no forward record set
-      expect(await assertReverseRecord(ens, bazAddr.address)).to.be.false
-      
+      await ens.connect(aAddr).setResolver(namehash.hash('a.eth'), resolver.address)
+      await ens.connect(bAddr).setResolver(namehash.hash('b.eth'), resolver.address)
+      // No c
+      // No d
+      await ens.connect(eAddr).setResolver(namehash.hash('e.eth'), resolver.address)
+      await ens.connect(fAddr).setResolver(namehash.hash('f.eth'), resolver.address)
+      await ens.connect(gAddr).setResolver(namehash.hash('g.eth'), resolver.address)
+
+      // Setting forward records
+      await await resolver.connect(aAddr)['setAddr(bytes32,address)'](namehash.hash('a.eth'), aAddr.address);
+      await await resolver.connect(bAddr)['setAddr(bytes32,address)'](namehash.hash('b.eth'), bAddr.address);
+      // No c
+      // No d
+      // No e
+      await await resolver.connect(fAddr)['setAddr(bytes32,address)'](namehash.hash('f.eth'), fAddr.address);
+      await await resolver.connect(gAddr)['setAddr(bytes32,address)'](namehash.hash('g.eth'), gAddr.address);
+
+      // Setting reverse record
+      await registrar.connect(aAddr).setName('a.eth')
+      // No reverse record set on b
+      await registrar.connect(cAddr).setName('c.eth')
+      await registrar.connect(dAddr).setName('d.eth')
+      await registrar.connect(eAddr).setName('e.eth')
+      await registrar.connect(fAddr).setName('')
+      await registrar.connect(gAddr).setName('g.eth')
+
       const ReverseRecords = await ethers.getContractFactory("ReverseRecords");
-
       const reverseRecords = await ReverseRecords.deploy(ens.address);
-      const results = await reverseRecords.getNames([fooAddr.address, barAddr.address, bazAddr.address]);
-      expect(results[0]).to.equal('foo.eth');
+      const results = await reverseRecords.getNames([aAddr.address, bAddr.address, cAddr.address, dAddr.address, eAddr.address, fAddr.address, gAddr.address]);
+      expect(await assertReverseRecord(ens, aAddr.address)).to.be.true
+      expect(results[0]).to.equal('a.eth');
+      expect(await assertReverseRecord(ens, bAddr.address)).to.be.false
       expect(results[1]).to.equal('');
+      expect(await assertReverseRecord(ens, cAddr.address)).to.be.false
       expect(results[2]).to.equal('');
-  });
+      expect(await assertReverseRecord(ens, dAddr.address)).to.be.false
+      expect(results[3]).to.equal('');
+      expect(await assertReverseRecord(ens, eAddr.address)).to.be.false
+      expect(results[4]).to.equal('');
+      expect(await assertReverseRecord(ens, fAddr.address)).to.be.false
+      expect(results[5]).to.equal('');
+      expect(await assertReverseRecord(ens, gAddr.address)).to.be.true
+      expect(results[6]).to.equal('g.eth');
+    });
 });

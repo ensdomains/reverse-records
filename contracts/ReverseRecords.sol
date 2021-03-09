@@ -28,6 +28,9 @@ contract ReverseRecords {
             if(resolverAddress != address(0x0)){
                 Resolver resolver = Resolver(resolverAddress);
                 string memory name = resolver.name(node);
+                if(bytes(name).length == 0 ){
+                    continue;
+                }
                 bytes32 namehash = Namehash.namehash(name);
                 address forwardResolverAddress = ens.resolver(namehash);
                 if(forwardResolverAddress != address(0x0)){

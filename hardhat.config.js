@@ -9,6 +9,12 @@ const CONTRACTS = {
   'ropsten': '0x72c33B247e62d0f1927E8d325d0358b8f9971C68'
 }
 
+const {
+  MNEMONIC,
+  INFURA_ID,
+  ETHERSCANKEY
+} = process.env
+
 task("names", "query reverse records")
   .addParam("addresses", "List of accounts, comma delimited")
   .setAction(async (taskArgs, hre) => {
