@@ -10,9 +10,9 @@ const CONTRACTS = {
 }
 
 const {
-  MNEMONIC,
-  INFURA_ID,
-  ETHERSCANKEY
+  MNEMONIC = '',
+  INFURA_ID = '',
+  ETHERSCANKEY = ''
 } = process.env
 
 task("names", "query reverse records")
