@@ -6,7 +6,7 @@
 ```
 git clone https://github.com/ensdomains/reverse-records
 cd reverse-records
-cp secrets.json.example .secrets.json // Add your mnemonic, infura project id, and etherscan key
+cp env.example .env // Add your mnemonic, infura project id, and etherscan key
 yarn
 ```
 
@@ -21,6 +21,18 @@ yarn query:ropsten 0x123...,0x234...
 ### getNames([address])
 
 Returns an array of string. If the given address does not have a reverse record or forward record setup, it returns an empty string.
+
+## Usage note
+
+Make sure to compare that the returned names match with the normalised names to prevent from [homograph attack](https://en.wikipedia.org/wiki/IDN_homograph_attack)
+
+Example
+
+```js
+const namehash = require('eth-ens-namehash');
+const allnames = await ReverseRecords.getNames(['0x123','0x124'])
+const validNames = allnames.filter((n) => namehash.normalize(n) === n )
+```
 
 
 ## Deployed contract address

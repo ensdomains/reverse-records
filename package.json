@@ -26,6 +26,7 @@
     "@ensdomains/dnssec-oracle": "^0.2.0",
     "@ensdomains/ens": "^0.5.0",
     "@ensdomains/resolver": "^0.3.0",
+    "dotenv": "^8.2.0",
     "eth-ens-namehash": "^2.0.8"
   }
 }

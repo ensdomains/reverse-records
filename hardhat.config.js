@@ -2,8 +2,9 @@ require("@nomiclabs/hardhat-waffle");
 require('@ensdomains/ens');
 require('@ensdomains/resolver');
 require("@nomiclabs/hardhat-etherscan");
+const dotenv = require("dotenv")
+dotenv.config()
 
-const { mnemonic, infuraId, etherscanKey } = require('./.secrets.json');
 const CONTRACTS = {
   'ropsten': '0x72c33B247e62d0f1927E8d325d0358b8f9971C68'
 }
@@ -24,10 +25,10 @@ module.exports = {
     hardhat: {
     },
     ropsten: {
-      url: `https://ropsten.infura.io/v3/${infuraId}`,
+      url: `https://ropsten.infura.io/v3/${INFURA_ID}`,
       chainId: 3,
       gasPrice: 20000000000,
-      accounts: {mnemonic: mnemonic}
+      accounts: {mnemonic: MNEMONIC}
     },
     // rinkeby: {
     // },
@@ -37,7 +38,7 @@ module.exports = {
     // }
   },
   etherscan: {
-    apiKey: etherscanKey
+    apiKey: ETHERSCANKEY
   },
   solidity: {
     compilers: [
