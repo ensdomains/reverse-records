@@ -85,7 +85,15 @@ describe("ReverseRecords contract", function() {
 
       const ReverseRecords = await ethers.getContractFactory("ReverseRecords");
       const reverseRecords = await ReverseRecords.deploy(ens.address);
-      const results = await reverseRecords.getNames([aAddr.address, bAddr.address, cAddr.address, dAddr.address, eAddr.address, fAddr.address, gAddr.address]);
+      const results = await reverseRecords.getNames([
+        aAddr.address,
+        bAddr.address,
+        cAddr.address,
+        dAddr.address,
+        eAddr.address,
+        fAddr.address,
+        gAddr.address
+      ]);
       expect(await assertReverseRecord(ens, aAddr.address)).to.be.true
       expect(results[0]).to.equal('a.eth');
       expect(await assertReverseRecord(ens, bAddr.address)).to.be.false
