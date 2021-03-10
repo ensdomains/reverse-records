@@ -6,8 +6,18 @@
   "scripts": {
     "test": "hardhat test",
     "deploy:ropsten": "npx hardhat run --network ropsten scripts/deploy.js",
-    "verify:ropsten": "npx hardhat verify --network ropsten 0x72c33B247e62d0f1927E8d325d0358b8f9971C68 '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e'",
-    "query:ropsten": "npx hardhat names --network ropsten --addresses"
+    "verify:ropsten": "npx hardhat verify --network ropsten 0x5bBFe410e18DCcaebbf5fD7A00844d4255615258 '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e'",
+    "query:ropsten": "npx hardhat names --network ropsten --addresses",
+    "deploy:rinkeby": "npx hardhat run --network rinkeby scripts/deploy.js",
+    "verify:rinkeby": "npx hardhat verify --network rinkeby 0x196eC7109e127A353B709a20da25052617295F6f '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e'",
+    "query:rinkeby": "npx hardhat names --network rinkeby --addresses",
+    "deploy:goerli": "npx hardhat run --network goerli scripts/deploy.js",
+    "verify:goerli": "npx hardhat verify --network goerli 0x333Fc8f550043f239a2CF79aEd5e9cF4A20Eb41e '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e'",
+    "query:goerli": "npx hardhat names --network goerli --addresses",
+    "deploy:mainnet": "npx hardhat run --network mainnet scripts/deploy.js",
+    "verify:mainnet": "npx hardhat verify --network mainnet 0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C '0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e'",
+    "query:mainnet": "npx hardhat names --network mainnet --addresses",
+    "test:mainnet": "npx hardhat run --network mainnet scripts/real_data_test.js"
   },
   "keywords": [],
   "author": "Makoto Inoue",
@@ -19,6 +29,7 @@
     "chai": "^4.3.0",
     "ethereum-waffle": "^3.3.0",
     "ethers": "^5.0.31",
+    "graphql": "^15.5.0",
     "hardhat": "^2.0.11"
   },
   "dependencies": {

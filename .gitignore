@@ -3,4 +3,5 @@ node_modules
 #Hardhat files
 cache
 artifacts
+yarn-error.log
 .env

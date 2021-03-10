@@ -6,7 +6,10 @@ const dotenv = require("dotenv")
 dotenv.config()
 
 const CONTRACTS = {
-  'ropsten': '0x72c33B247e62d0f1927E8d325d0358b8f9971C68'
+  'ropsten': '0x5bBFe410e18DCcaebbf5fD7A00844d4255615258',
+  'rinkeby': '0x196eC7109e127A353B709a20da25052617295F6f',
+  'goerli': '0x333Fc8f550043f239a2CF79aEd5e9cF4A20Eb41e',
+  'mainnet': '0x3671aE578E63FdF66ad4F3E12CC0c0d71Ac7510C'
 }
 
 const {
@@ -33,15 +36,27 @@ module.exports = {
     ropsten: {
       url: `https://ropsten.infura.io/v3/${INFURA_ID}`,
       chainId: 3,
-      gasPrice: 20000000000,
+      gasPrice: 20000000000, // 20 gwei
       accounts: {mnemonic: MNEMONIC}
     },
-    // rinkeby: {
-    // },
-    // goerli: {
-    // },
-    // mainnet: {
-    // }
+    rinkeby: {
+      url: `https://rinkeby.infura.io/v3/${INFURA_ID}`,
+      chainId: 4,
+      gasPrice: 20000000000, // 20 gwei
+      accounts: {mnemonic: MNEMONIC}
+    },
+    goerli: {
+      url: `https://goerli.infura.io/v3/${INFURA_ID}`,
+      chainId: 5,
+      gasPrice: 20000000000, // 20 gwei
+      accounts: {mnemonic: MNEMONIC}
+    },
+    mainnet: {
+      url: `https://mainnet.infura.io/v3/${INFURA_ID}`,
+      chainId: 1,
+      gasPrice: 120000000000, // 120 gwei
+      accounts: {mnemonic: MNEMONIC}
+    }
   },
   etherscan: {
     apiKey: ETHERSCANKEY
