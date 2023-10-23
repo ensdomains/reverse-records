@@ -25,20 +25,26 @@ contract ReverseRecords {
         for(uint i = 0; i < addresses.length; i++) {
             bytes32 node = node(addresses[i]);
             address resolverAddress = ens.resolver(node);
-            if(resolverAddress != address(0x0)){
+            if(resolverAddress != address(0x0) && isContract(resolverAddress)){
                 Resolver resolver = Resolver(resolverAddress);
-                string memory name = resolver.name(node);
-                if(bytes(name).length == 0 ){
-                    continue;
-                }
-                bytes32 namehash = Namehash.namehash(name);
-                address forwardResolverAddress = ens.resolver(namehash);
-                if(forwardResolverAddress != address(0x0)){
-                    Resolver forwardResolver = Resolver(forwardResolverAddress);
-                    address forwardAddress = forwardResolver.addr(namehash);
-                    if(forwardAddress == addresses[i]){
-                        r[i] = name;
+                try resolver.name(node) returns (string memory name) {
+                    if(bytes(name).length == 0 ){
+                        continue;
                     }
+                    bytes32 namehash = Namehash.namehash(name);
+                    address forwardResolverAddress = ens.resolver(namehash);
+                    if(forwardResolverAddress != address(0x0) && isContract(forwardResolverAddress)){
+                        Resolver forwardResolver = Resolver(forwardResolverAddress);
+                        try forwardResolver.addr(namehash) returns (address forwardAddress) {
+                            if(forwardAddress == addresses[i]){
+                                r[i] = name;
+                            }
+                        } catch {
+                            // Do nothing
+                        }
+                    }
+                } catch {
+                    // Do nothing
                 }
             }
         }
@@ -66,5 +72,13 @@ contract ReverseRecords {
 
             ret := keccak256(0, 40)
         }
+    }
+
+    function isContract(address _addr) private view returns (bool isContract){
+        uint32 size;
+        assembly {
+            size := extcodesize(_addr)
+        }
+        return (size > 0);
     }
 }
