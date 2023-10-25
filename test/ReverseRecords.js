@@ -42,8 +42,8 @@ describe("ReverseRecords contract", function() {
       // aAddr: correct
       // bAddr: no reverse record set
       // cAddr: not the owner of c.eth
-      // dAddr: ower of d.eth but no resolver set
-      // eAddr: ower of e.eth and resolver set but no forward address set
+      // dAddr: owner of d.eth but no resolver set
+      // eAddr: owner of e.eth and resolver set but no forward address set
       // fAddr: set empty string to reverse record
       // gAddr: correct
       // hAddr: set resolver as an EOA
