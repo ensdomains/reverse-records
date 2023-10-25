@@ -24,7 +24,7 @@ async function assertReverseRecord(ens, address){
 describe("ReverseRecords contract", function() {
     let node, ens, resolver, registrar, ethNode
     before(async () => {
-      const [owner, aAddr, bAddr, cAddr, dAddr, eAddr, fAddr, gAddr] = await ethers.getSigners();
+      const [owner] = await ethers.getSigners();
       ethNode = namehash.hash('eth')
       node = namehash.hash(owner.address.slice(2).toLowerCase() + ".addr.reverse");
       const ENSRegistry = await ethers.getContractFactory("ENSRegistry");
@@ -49,8 +49,6 @@ describe("ReverseRecords contract", function() {
       // hAddr: set resolver as an EOA
       // iAddr: set resolver with a wrong interface
       const [owner, aAddr, bAddr, cAddr, dAddr, eAddr, fAddr, gAddr, hAddr, iAddr] = await ethers.getSigners();
-      const PublicResolver = await ethers.getContractFactory("PublicResolver");
-      const resolverArtifact = await hre.artifacts.readArtifact("PublicResolver")
       await ens.setSubnodeOwner(namehash.hash('eth'), sha3('a'), aAddr.address);
       await ens.setSubnodeOwner(namehash.hash('eth'), sha3('b'), bAddr.address);
       // No c
@@ -68,8 +66,10 @@ describe("ReverseRecords contract", function() {
       await ens.connect(eAddr).setResolver(namehash.hash('e.eth'), resolver.address)
       await ens.connect(fAddr).setResolver(namehash.hash('f.eth'), resolver.address)
       await ens.connect(gAddr).setResolver(namehash.hash('g.eth'), resolver.address)
+      // Set the resolver to a non contract address
       await ens.connect(hAddr).setResolver(namehash.hash('h.eth'), hAddr.address)
-      await ens.connect(iAddr).setResolver(namehash.hash('i.eth'), ens.address)
+
+      await ens.connect(iAddr).setResolver(namehash.hash('i.eth'), resolver.address)
 
       // Setting forward records
       await await resolver.connect(aAddr)['setAddr(bytes32,address)'](namehash.hash('a.eth'), aAddr.address);
@@ -80,6 +80,8 @@ describe("ReverseRecords contract", function() {
       await await resolver.connect(fAddr)['setAddr(bytes32,address)'](namehash.hash('f.eth'), fAddr.address);
       await await resolver.connect(gAddr)['setAddr(bytes32,address)'](namehash.hash('g.eth'), gAddr.address);
 
+      await await resolver.connect(iAddr)['setAddr(bytes32,address)'](namehash.hash('i.eth'), iAddr.address);
+
       // Setting reverse record
       await registrar.connect(aAddr).setName('a.eth')
       // No reverse record set on b
@@ -89,9 +91,14 @@ describe("ReverseRecords contract", function() {
       await registrar.connect(fAddr).setName('')
       await registrar.connect(gAddr).setName('g.eth')
       await registrar.connect(hAddr).setName('h.eth')
+      await registrar.connect(iAddr).setName('i.eth')
 
       const ReverseRecords = await ethers.getContractFactory("ReverseRecords");
       const reverseRecords = await ReverseRecords.deploy(ens.address);
+
+      // Set a good resolver to a contract that doesn't support the function
+      await ens.connect(iAddr).setResolver(namehash.hash('i.eth'), reverseRecords.address)
+
       const results = await reverseRecords.getNames([
         aAddr.address,
         bAddr.address,
