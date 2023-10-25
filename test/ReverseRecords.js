@@ -49,6 +49,8 @@ describe("ReverseRecords contract", function() {
       // hAddr: set resolver as an EOA
       // iAddr: set resolver with a wrong interface
       const [owner, aAddr, bAddr, cAddr, dAddr, eAddr, fAddr, gAddr, hAddr, iAddr] = await ethers.getSigners();
+      const PublicResolver = await ethers.getContractFactory("PublicResolver");
+      const resolverArtifact = await hre.artifacts.readArtifact("PublicResolver")
       await ens.setSubnodeOwner(namehash.hash('eth'), sha3('a'), aAddr.address);
       await ens.setSubnodeOwner(namehash.hash('eth'), sha3('b'), bAddr.address);
       // No c
