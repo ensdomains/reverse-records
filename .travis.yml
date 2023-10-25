@@ -5,9 +5,10 @@ dist: trusty
 language: node_js
 
 node_js:
-  - '14'
+  - '18'
 install:
-  - npm install
+  - npm install -g yarn
+  - yarn
 env:
   - TASK=test
 matrix:
@@ -17,7 +18,7 @@ before_script:
   - ganache-cli > /dev/null &
   - sleep 5
 script:
-  - npm run $TASK
+  - yarn $TASK
 
 notifications:
   email: false
